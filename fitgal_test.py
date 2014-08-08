@@ -1,0 +1,123 @@
+#!/usr/bin/env python
+
+import os,time,sys,math,glob
+import config_test as c
+
+# parse command line variables
+if (len(sys.argv) != 8):
+    print "Expected 7 command line arguments. Found "+str(len(sys.argv)-1)+" Using default values for command line arguments\n"
+else:
+    c.imagefile=sys.argv[1]
+    c.psffile = sys.argv[2]
+    c.xcenter=  float(sys.argv[3])
+    c.ycenter=  float(sys.argv[4])
+    if (int(sys.argv[5]) == 1): c.fit_bulge=True
+    if (int(sys.argv[6]) == 1): c.fit_disk=True
+    if (int(sys.argv[7]) == 1): c.fit_point=True
+
+# Is graphics plotting module available?
+try:
+    import pylab
+    c.have_pylab=True
+except:
+    print "Plotting library not found"
+
+# import required modules
+import numpy as np # numarray provides fast array processing
+import random 
+import numpy.random as numra
+import numpy.ma as ma
+import scipy.signal as conv # convolution functions
+#from hippo import FunctionBase # hippo provides Python-Minuit interface
+from astropy.io import fits
+from fitgalfunc_test import * # fitgalfunc is a collection of useful functions
+      
+# Initialise variables
+tstart = time.clock() # Start clock to measure time taken for fitting 
+c.niter=0 # initialise number of iterations
+
+
+z= c.galaxy.flat # make 1d array from 2d galaxy array
+
+
+numra.seed(120980)# Set random number seed
+zerr = np.sqrt((abs(numra.poisson(z)-z)*c.gain)**2.0+c.rdnoise**2.0)
+
+f = valueAt
+#make_test_galaxy
+from iminuit import Minuit 
+pylab.ion()
+print 'created figure'
+pylab.figure(1,figsize=(7.5,5.0))
+pylab.show()
+m=Minuit(f,i0b=c.i0bvals[0],error_i0b=c.i0bvals[3],limit_i0b=(c.i0bvals[1],c.i0bvals[2]),re=c.revals[0],error_re=c.revals[3],limit_re=(c.revals[1],c.revals[2]),eb=c.ebvals[0],error_eb=c.ebvals[3],limit_eb=(c.ebvals[1],c.ebvals[2]),n=c.nvals[0],error_n=c.nvals[3],limit_n=(c.nvals[1],c.nvals[2]),i0d=c.i0dvals[0],error_i0d=c.i0dvals[3],limit_i0d=(c.i0dvals[1],c.i0dvals[2]),rd=c.rdvals[0],error_rd=c.rdvals[3],limit_rd=(c.rdvals[1],c.rdvals[2]),ed=c.edvals[0],error_ed=c.edvals[3],limit_ed=(c.edvals[1],c.edvals[2]),point=c.pointvals[0],error_point=c.pointvals[3],fix_point=True,bpa=c.bpavals[0],error_bpa=c.bpavals[3],limit_bpa=(c.bpavals[1],c.bpavals[2]),dpa=c.dpavals[0],error_dpa=c.dpavals[3],limit_dpa=(c.dpavals[1],c.dpavals[2]),background=c.computedbackground,error_background=c.backgroundvals[3],limit_background=(c.backgroundvals[1],c.backgroundvals[2]),print_level=1)
+#m=Minuit(f,i0b=c.i0bvals[0],error_i0b=c.i0bvals[3],fix_i0b=True,re=c.revals[0],error_re=c.revals[3],fix_re=True,eb=c.ebvals[0],error_eb=c.ebvals[3],fix_eb=True,n=c.nvals[0],error_n=c.nvals[3],fix_n=True,i0d=c.i0dvals[0],error_i0d=c.i0dvals[3],fix_i0d=True,rd=c.rdvals[0],error_rd=c.rdvals[3],fix_rd=True,ed=c.edvals[0],error_ed=c.edvals[3],fix_ed=True,point=c.pointvals[0],error_point=c.pointvals[3],fix_point=True,bpa=c.bpavals[0],error_bpa=c.bpavals[3],limit_bpa=(c.bpavals[1],c.bpavals[2]),dpa=c.dpavals[0],error_dpa=c.dpavals[3],limit_dpa=(c.dpavals[1],c.dpavals[2]),background=c.computedbackground,error_background=c.backgroundvals[3],fix_background=True,print_level=1)
+
+
+
+
+m.migrad()
+pylab.close()
+
+
+# Minimization should now be over, start to generate outputs
+
+c.finalvalues=m.values.values() # read final fit parameters into list
+
+# remove old files if they exist
+for myfile in ['model.fits','bulge.fits','disk.fits','residual.fits']:
+    if os.access(myfile,os.F_OK):
+        os.remove(myfile)
+# Write Model galaxy image
+hdu =fits.PrimaryHDU(c.model_galaxy.astype(np.float32))
+hdu.writeto('model.fits')
+
+# Write bulge
+if (c.do_convolve==True):
+ c.bulge= conv.convolve2d(c.bulge,c.psf,mode='same',boundary='symm')
+hdu = fits.PrimaryHDU(c.bulge.astype(np.float32))
+hdu.writeto('bulge.fits')
+# Write disk
+if (c.do_convolve==True):
+ c.disk = conv.convolve2d(c.disk,c.psf,mode='same',boundary='symm')
+hdu = fits.PrimaryHDU(c.disk.astype(np.float32))
+hdu.writeto('disk.fits')
+
+# Write residual image defined as in Galfit
+residual = c.galaxy-c.model_galaxy
+hdu =fits.PrimaryHDU(residual.astype(np.float32))
+hdu.writeto('residual.fits')
+
+# Write fit results as a CSV format file
+resultfile = 'fitgal.csv'
+outfile = open(resultfile,'w')
+outfile.write(str(m.values.keys)[1:-1]+'\n')
+outfile.write(str(m.values.values())[1:-1]+'\n')
+outfile.close()
+
+# Generate plot and write as PNG and PS files
+if (c.have_pylab and c.make_plots):
+    write_html_norefresh()
+    pylab.subplot(223)
+    pylab.savefig('fitgal.ps')
+  #   Generate animated GIF for the fitting process
+    if (c.make_movie):
+        os.system("convert -compress LZW -adjoin -delay 400 iter????.png fitgal-animation.gif")
+      
+        files=glob.glob('iter????m:.png')
+        for file in files:
+            os.remove(file)
+
+# Compute time taken and chi^2
+tend=time.clock() # CPU time
+timetaken= tend - tstart # tstart was defined earlier
+validpix = np.where(zerr != 0.0)
+
+if (c.use_mask):
+    numpoints = ma.count(c.maskedgalaxy)
+else:
+    numpoints = (c.nxpts*c.nypts)
+    
+chi2 = np.sum(((z[validpix]-c.model_galaxy.flat[validpix])/zerr[validpix])**2.0)/numpoints
+
+print "Migrad fitting completed in "+str(c.niter)+" iterations with reduced chi^2 "+str(chi2)+" in "+str(timetaken)+" seconds"

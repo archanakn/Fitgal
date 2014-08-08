@@ -1,0 +1,93 @@
+# IMAGE PARAMETERS
+A) h_sz_905632_drz.fits      # Input data image (FITS file)
+B) h_sz_905632_out.fits      # Name for the output image
+C) h_sz_905632_sig.fits      # Noise image name (made from data if blank or "none")
+D) h_sz_3403675_star.fits     # Input PSF image for convolution (FITS file)
+E) 1                          # PSF oversampling factor relative to data
+F) none                       # Bad pixel mask(FITS image or ASCII coord list)
+G) none                       # File with parameter constraints (ASCII file)
+H) 1 300 1 300         # Image region to fit (xmin xmax ymin ymax)
+I) 300   300           # Size of convolution box (x y)
+J) 24.8432                # Magnitude photometric zeropoint
+O) both                # Display type (regular, curses, both)
+P) 0                   # Create output image only? (1=yes; 0=optimize)
+S) 0		       # Modify/create objects interactively?
+
+ 
+ 
+# Sersic function
+
+ 0) sersic             # Object type
+ 1) 150  150  1 1      # position x, y        [pixel]
+ 3)      23.77     1      # total magnitude
+ 4)       6.36     1      #     R_e              [Pixels]
+ 5) 4.0        1       # Sersic exponent (deVauc=4, expdisk=1)
+ 8)      0.651     1       # axis ratio (b/a)
+ 9)      153.1      1       # position angle (PA)  [Degrees: Up=0, Left=90]
+10) 0.0        0       # diskiness (< 0) or boxiness (> 0)
+ Z) 0                  # output image (see above)
+
+# Exponential function
+
+ 0) expdisk            # Object type
+ 1) 150  150  1 1     # position x, y        [pixel]
+ 3)      23.77       1       # total magnitude
+ 4)       6.36       1       #     Rs               [Pixels]
+ 8)      0.651       1       # axis ratio (b/a)
+ 9)      153.1        1       # position angle (PA)  [Degrees: Up=0, Left=90]
+10) 0          0       # diskiness (< 0) or boxiness (> 0)
+ Z) 0                  # output image (see above)
+
+ 
+# sky
+
+ 0) sky
+ 1) 0.000297436       0       # sky background       [ADU counts]
+ 2) 0.000      0       # dsky/dx (sky gradient in x)
+ 3) 0.000      0       # dsky/dy (sky gradient in y)
+ Z) 0                  # output image
+
+ 
+ 
+# Neighbour sersic function
+
+ 0) sersic             # Object type
+ 1)     121.32      176.44  1 1      # position x, y        [pixel]
+ 3)      25.26     1      # total magnitude
+ 4)       7.47     1      #     R_e              [Pixels]
+ 5) 4.0        1       # Sersic exponent (deVauc=4, expdisk=1)
+ 8) 0.5       1       # axis ratio (b/a)
+ 9) 45.0      1       # position angle (PA)  [Degrees: Up=0, Left=90]
+10) 0.0        0       # diskiness (< 0) or boxiness (> 0)
+ Z) 0                  # output image (see above)
+
+
+ 
+ 
+# Neighbour sersic function
+
+ 0) sersic             # Object type
+ 1)     275.03      137.53  1 1      # position x, y        [pixel]
+ 3)      25.38     1      # total magnitude
+ 4)       6.67     1      #     R_e              [Pixels]
+ 5) 4.0        1       # Sersic exponent (deVauc=4, expdisk=1)
+ 8) 0.5       1       # axis ratio (b/a)
+ 9) 45.0      1       # position angle (PA)  [Degrees: Up=0, Left=90]
+10) 0.0        0       # diskiness (< 0) or boxiness (> 0)
+ Z) 0                  # output image (see above)
+
+
+ 
+ 
+# Neighbour sersic function
+
+ 0) sersic             # Object type
+ 1)      53.42       14.49  1 1      # position x, y        [pixel]
+ 3)      25.32     1      # total magnitude
+ 4)       6.15     1      #     R_e              [Pixels]
+ 5) 4.0        1       # Sersic exponent (deVauc=4, expdisk=1)
+ 8) 0.5       1       # axis ratio (b/a)
+ 9) 45.0      1       # position angle (PA)  [Degrees: Up=0, Left=90]
+10) 0.0        0       # diskiness (< 0) or boxiness (> 0)
+ Z) 0                  # output image (see above)
+
