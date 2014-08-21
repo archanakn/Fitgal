@@ -1,0 +1,103 @@
+
+
+Fitgal - A galaxy bulge disk decomposition code
+
+Yogesh Wadadekar and Ajit Kembhavi
+
+Version 1.4 May 2003
+
+
+
+Abstract
+
+Fitgal is a open source C and FORTRAN code for two dimensional bulge
+disk decomposition developed at IUCAA in Pune, India. It capabilities
+have been described in Wadadekar, Robbason and Kembhavi (1999).
+
+1 What is Fitgal
+
+Two dimensional galaxy image decomposition has been gaining popularity
+in recent years. (Byun and Freeman 1995; Bagget, Bagget and Anderson
+1998; Wadadekar, Robbason and Kembhavi (1999); D'Onofrio 1999). Fitgal
+is a robust, documented open source code. It uses the PGPLOT library
+for graphical representation of the fitting process. 
+
+1.1 Who uses fitgal ?
+
+Fitgal has been used at the following locations:
+
+1. Extra-galactic Astrophysics Group, TIFR
+
+2. Extra-galactic Astrophysics Group, IUCAA
+
+2 Installing the software
+
+2.1 Software and Hardware requirements:
+
+Fitgal has been designed to be portable across Unix and Unix-like systems.
+It has been compiled and used on SunOS, Solaris, Digital UNIX, IRIX
+and Linux. It uses the CPGPLOT (C binding for PGPLOT) library for
+graphical output to monitor the fitting process. If you do not have
+PGPLOT installed on your system already, you need to download and
+install it from http://www.astro.caltech.edu/~tjp/pgplot/
+
+Fitgal places no specific requirements on the hardware. However a Sun
+Ultra class worstation is required if you want to process significant
+number of galaxies in a reasonable amount of time.
+
+2.2 Obtaining fitgal
+
+Fitgal 1.4 source in tar.gz format may be downloaded from the following
+URL You can find here the latest version of the software along with
+some documentation.
+
+2.3 Installation
+
+To install you must first uncompress and untar the archive:
+
+gzip -dc fitgal1.4.tar.gz | tar xv
+
+A new directory called fitgal 1.4 should now appear in your current
+working directory. Then cd to that directory and follow the installation
+instructions in the file called INSTALL.
+
+3 Using the software
+
+3.1 Running fitgal
+
+Fitgal is started from the command prompt by simply typing fitgal.
+This starts the minimisation process. Periodic visual reports are
+provided about the progress of the fit. All parameters related to
+the fitting are set in configuration files described below.
+
+3.2 Configuration files
+
+Several configuration files are required by fitgal. These are:
+
+1. fitgal_min.d contains configuration parameters for the minimization
+  by MINUIT. Please check the documentation for details on the syntax
+  of this file.
+
+2. fitgal.conf: Here you need to specify where the galaxy data is sitting,
+  a bad pixel file (can be empty), sigma (FWHM/2.35) for a Gaussian
+  PSF in pixels, the X and Y coordinates of the center of the galaxy
+  and the position angle (starting value).
+
+4 Interpreting the outputs
+
+The main output files are:
+
+1. fitgal.results: minimized bulge and disk parameters
+
+2. fitgal.convresults: the same values as above but formatted for better
+  human readibility.
+
+3. pgplot.gif and pgplot.ps contain visual representations of the final
+  fit.
+
+4. fitgal.output: The best fit model image in ASCII format
+
+5. fitgal.ans: File created by MINUIT giving details of the progress
+  of the fit, exit conditions etc. and errors on the parameters
+
+5 FAQ

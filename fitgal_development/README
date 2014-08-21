@@ -1,0 +1,101 @@
+This README describes the Python version of fitgal, refered to as fitgal.py
+
+The fitgal tar file will contain the following 9 files
+
+0. This README file
+1. fitgal.py: The main fitgal program
+2. fitgalfunc.py: A set of functions and subroutines needed by fitgal.py
+3. config.py: The fitgal configuration file. You control fitgal's
+fitting behavior mostly by modifying this file. 
+
+For testing purposes, I have also provided:
+4. test1.fits: A FITS file with a sample image taken from SDSS r-band data.
+5. gauss25.fits: The PSF image correspoding to the galaxy data above.
+6. mask.fits: A mask file that can be used in conjunction with test1.fits
+7. runfitgal: a single line script to call the fitgal.py program
+8. matplotlibrc: a configuration file for matplotlib plotting library
+
+Preparation
+-----------
+PLEASE SKIP THIS PREPARATION STEP TILL SARAH INSTALLS MATPLOTLIB
+The matplotlibrc file needs to be moved to the right location. To do that:
+
+mkdir ~/.matplotlib
+mv matplotlibrc ~/.matplotlib
+
+Follow fitting progress on the web
+----------------------------------
+
+Every 100 iterations, the program writes a HTML file called fitgal.html.
+To follow the progress of your fitting on the web do the following
+1. Unpack the fitgal.tar file in your web directory (or a sub-directory) 
+eg. I unpacked mine in /usr1/yogesh/public_html/fitgal
+2. Set the webdir variable in config.py to point to this directory
+eg. For the directory above, I used:
+webdir='http://meghnad.iucaa.ernet.in/~yogesh/fitgal/'
+Note: trailing slash is required!
+3. Run the code (see next section)
+4. Point your browser to the fitgal.html file at that URL
+eg. I need to point mine to:
+http://meghnad.iucaa.ernet.in/~yogesh/fitgal/fitgal.html
+The page refreshes automatically. Enjoy! 
+
+Running the code
+----------------
+
+To run fitgal.py simply type,
+
+./runfitgal
+
+at the shell prompt. The current best fit values are printed to
+STDOUT after every 50 iterations.
+
+The order of the parameters is:
+'i0b', 're', 'eb', 'n', 'i0d', 'rd', 'ed', 'point', 'bpa','dpa', 'background'
+ 
+Tip: Fitting should take about 157 seconds on aten without graphical
+output, somewhat longer with graphics outputs.
+
+After the fitting is complete, the following output files are generated.
+
+1. model.fits: FITS file with the best fit model convolved with the PSF
+2. bulge.fits: FITS file with the best fit bulge convolved with the PSF
+3. disk.fits : FITS file with the best fit disk convolved with the PSF
+4. residual.fits: (real-model)/real FITS file.
+5. fitgal.csv: the best fit parameters in CSV format.
+6. fitgal.png: PNG file of the final iteration graphical plot
+7. fitgal.ps: Postscipt file of the final iteration graphical plot
+
+Note: fitgal.png and fitgal.ps are only produced if matplotlib is installed.
+
+To run the script on your own galaxy image, you need to modify the runfitgal
+file. 
+
+You will need to supply a galaxy image (fits cutout), PSF image (with
+PSF properly centered) and the xcenter and ycenter of the galaxy and
+what components you will fit. 
+
+./fitgal.py test1.fits gauss25.fits 26.74 27.53 1 1 1
+
+The  seven arguments are:
+1. test1.fits: The galaxy FITS image
+2. gauss25.fits: The PSF image
+3. 26.74: X-center of galaxy
+4. 27.53: Y-center of galaxy
+5. 1: Fit bulge, use 0 here for don't fit bulge
+6. 1: Fit disk, use 0 here for don't fit disk
+7. 1: Fit point, use 0 here for don't fit point
+
+You can also modify the parameter initial values, ranges and
+whether the parameter should be held fixed. You will need to change
+the config.py file to do this. The code is commented to aid you.
+
+If you want to learn more
+-------------------------
+
+You may wish to read the code. Start with the file fitgal.py to follow
+the rather straightforward logic. For the details, read
+fitgalfunc.py. config.py contains all the user configurable
+parameters. Reading Python is easy, even if you don't know the
+language. Remember: in python, identation is the only way to define
+the beginning and end of blocks.

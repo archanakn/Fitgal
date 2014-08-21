@@ -1,0 +1,16 @@
+ todo list
+
+ high priority
+
+ parse parameters from command line
+ Generate gaussian psf if psf image is not available. 6x FWHM is usually enough, oversample center pixel factor 5
+ set edm in minuit to 0.2 or so!
+ include support for .pl files as mask files Can pyfits read?
+ get feedback
+
+ low priority
+ implement a better get_sky than a simple median?
+ use weight files if available
+ move to Minuit2?
+ Ability to use a section of a large image for fitting
+ Write user guide
