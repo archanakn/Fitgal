@@ -1,0 +1,183 @@
+#LyX 1.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 2.16
+\textclass article
+\language default
+\inputencoding default
+\fontscheme default
+\graphics default
+\paperfontsize default
+\spacing single 
+\papersize Default
+\paperpackage a4
+\use_geometry 0
+\use_amsmath 0
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\quotes_times 2
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+
+\layout Title
+
+Fitgal - A galaxy bulge disk decomposition code
+\layout Author
+
+Yogesh Wadadekar and Ajit Kembhavi
+\layout Date
+
+Version 1.4 May 2003
+\layout Standard
+
+
+\begin_inset LatexCommand \tableofcontents{}
+
+\end_inset 
+
+
+\layout Abstract
+
+Fitgal is a open source C and FORTRAN code for two dimensional bulge disk
+ decomposition developed at IUCAA in Pune, India.
+ It capabilities have been described in Wadadekar, Robbason and Kembhavi
+ (1999).
+\layout Section
+
+What is Fitgal
+\layout Standard
+
+Two dimensional galaxy image decomposition has been gaining popularity in
+ recent years.
+ (Byun and Freeman 1995; Bagget, Bagget and Anderson 1998; Wadadekar, Robbason
+ and Kembhavi (1999); D'Onofrio 1999).
+ Fitgal is a robust, documented open source code.
+ It uses the PGPLOT library for graphical representation of the fitting
+ process.
+ 
+\layout Subsection
+
+Who uses fitgal ?
+\layout Standard
+
+Fitgal has been used at the following locations:
+\layout Enumerate
+
+Extra-galactic Astrophysics Group, TIFR
+\layout Enumerate
+
+Extra-galactic Astrophysics Group, IUCAA
+\layout Section
+
+Installing the software
+\layout Subsection
+
+Software and Hardware requirements:
+\layout Standard
+
+Fitgal has been designed to be portable across Unix and Unix-like systems.
+ It has been compiled and used on SunOS, Solaris, Digital UNIX, IRIX and
+ Linux.
+ It uses the CPGPLOT (C binding for PGPLOT) library for graphical output
+ to monitor the fitting process.
+ If you do not have PGPLOT installed on your system already, you need to
+ download and install it from 
+\family typewriter 
+http://www.astro.caltech.edu/~tjp/pgplot/
+\layout Standard
+
+Fitgal places no specific requirements on the hardware.
+ However a Sun Ultra class worstation is required if you want to process
+ significant number of galaxies in a reasonable amount of time.
+\layout Subsection
+
+Obtaining fitgal
+\layout Standard
+
+Fitgal 1.4 source in tar.gz format may be downloaded from the following URL
+ You can find here the latest version of the software along with some documentat
+ion.
+\layout Subsection
+
+Installation
+\layout Standard
+
+To install you must first uncompress and untar the archive:
+\layout Standard
+
+
+\family typewriter 
+gzip -dc fitgal1.4.tar.gz | tar xv
+\layout Standard
+
+A new directory called fitgal 1.4 should now appear in your current working
+ directory.
+ Then cd to that directory and follow the installation instructions in the
+ file called INSTALL.
+\layout Section
+
+Using the software
+\layout Subsection
+
+Running fitgal
+\layout Standard
+
+Fitgal is started from the command prompt by simply typing fitgal.
+ This starts the minimisation process.
+ Periodic visual reports are provided about the progress of the fit.
+ All parameters related to the fitting are set in configuration files described
+ below.
+\layout Subsection
+
+Configuration files
+\layout Standard
+
+Several configuration files are required by fitgal.
+ These are:
+\layout Enumerate
+
+
+\family typewriter 
+fitgal_min.d 
+\family default 
+contains configuration parameters for the minimization by MINUIT.
+ Please check the documentation for details on the syntax of this file.
+\layout Enumerate
+
+fitgal.conf: Here you need to specify where the galaxy data is sitting, a
+ bad pixel file (can be empty), sigma (FWHM/2.35) for a Gaussian PSF in pixels,
+ the X and Y coordinates of the center of the galaxy and the position angle
+ (starting value).
+\layout Section
+
+Interpreting the outputs
+\layout Standard
+
+The main output files are:
+\layout Enumerate
+
+fitgal.results: minimized bulge and disk parameters
+\layout Enumerate
+
+fitgal.convresults: the same values as above but formatted for better human
+ readibility.
+\layout Enumerate
+
+pgplot.gif and pgplot.ps contain visual representations of the final fit.
+\layout Enumerate
+
+fitgal.output: The best fit model image in ASCII format
+\layout Enumerate
+
+fitgal.ans: File created by MINUIT giving details of the progress of the
+ fit, exit conditions etc.
+ and errors on the parameters
+\layout Section
+
+FAQ
+\layout Standard
+
+\the_end

@@ -1,0 +1,1 @@
+./fitgal.py test1.fits gauss25.fits 26.74 27.53 1 1 1

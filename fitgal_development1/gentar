@@ -1,0 +1,1 @@
+tar cvf ../fitgal.tar README test1.fits gauss25.fits mask.fits fitgal.py fitgalfunc.py config.py runfitgal matplotlibrc
